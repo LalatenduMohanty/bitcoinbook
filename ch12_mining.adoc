@@ -388,7 +388,6 @@ Total\:Fees = Sum(Inputs) - Sum(Outputs)
 \end{equation}
 ++++
 
-
 Next, Jing's node calculates the correct reward for the new block. The
 reward is calculated based on the block height, starting at 50 bitcoin
 per block and reduced by half every 210,000 blocks.
@@ -397,7 +396,7 @@ The calculation can be seen in function +GetBlockSubsidy+ in the Bitcoin
 Core client, as shown in <<getblocksubsidy_source>>.
 
 [[getblocksubsidy_source]]
-.Calculating the block reward&#x2014;Function [.plain]#+GetBlockSubsidy+,# Bitcoin Core Client, [.plain]#main.cpp#
+.Calculating the block reward—Function [.plain]#+GetBlockSubsidy+,# Bitcoin Core Client, [.plain]#main.cpp#
 ====
 [role="c_less_space"]
 [source, cpp]
@@ -457,86 +456,33 @@ The coinbase transaction
 has a special format. Instead of a transaction input specifying a
 previous UTXO to spend, it has a "coinbase" input. We examined
 transaction inputs in <<inputs>>. Let's compare a regular transaction
-input with a coinbase transaction input. <<table_8-1>> shows the
-structure of a regular transaction, while <<table_8-2>> shows the
-structure of the((("inputs", "coinbase versus regular transactions"))) coinbase transaction's input.
+input with a coinbase transaction input. See <<table_8-1>> and <<table_8-2>>.
 
-++++
-<table id="table_8-1">
-<caption>The structure of a “normal” transaction input</caption>
-<thead>
-<tr>
-<th>Size</th>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>32 bytes</p></td>
-<td><p>Transaction Hash</p></td>
-<td><p>Pointer to the transaction containing the UTXO to be spent</p></td>
-</tr>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Output Index</p></td>
-<td><p>The index number of the UTXO to be spent, first one is 0</p></td>
-</tr>
-<tr>
-<td><p>1–9 bytes (compactSize)</p></td>
-<td><p>Script Size</p></td>
-<td><p>Script length in bytes, to follow</p></td>
-</tr>
-<tr>
-<td><p>Variable</p></td>
-<td><p>Input Script</p></td>
-<td><p>A script that fulfills the conditions of the UTXO output script</p></td>
-</tr>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Sequence Number</p></td>
-<td><p>Multipurpose field used for BIP68 timelocks and transaction replacement signaling</p></td>
-</tr>
-</tbody>
-</table>
-<table id="table_8-2">
-<caption>The structure of a coinbase transaction input</caption>
-<thead>
-<tr>
-<th>Size</th>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>32 bytes</p></td>
-<td><p>Transaction Hash</p></td>
-<td><p>All bits are zero: Not a transaction hash reference</p></td>
-</tr>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Output Index</p></td>
-<td><p>All bits are ones: 0xFFFFFFFF</p></td>
-</tr>
-<tr>
-<td><p>1 byte</p></td>
-<td><p>Coinbase Data Size</p></td>
-<td><p>Length of the coinbase data, from 2 to 100 bytes</p></td>
-</tr>
-<tr>
-<td><p>Variable</p></td>
-<td><p>Coinbase Data</p></td>
-<td><p>Arbitrary data used for extra nonce and mining tags; in v2 blocks, must begin with block height</p></td>
-</tr>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Sequence Number</p></td>
-<td><p>Set to 0xFFFFFFFF</p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[table_8-1]]
+.The structure of a "normal" transaction input
+[cols="1,1,1",options="header"]
+|===
+|Size |Field |Description
+
+|32 bytes |Transaction Hash |Pointer to the transaction containing the UTXO to be spent
+|4 bytes |Output Index |The index number of the UTXO to be spent, first one is 0
+|1–9 bytes (compactSize) |Script Size |Script length in bytes, to follow
+|Variable |Input Script |A script that fulfills the conditions of the UTXO output script
+|4 bytes |Sequence Number |Multipurpose field used for BIP68 timelocks and transaction replacement signaling
+|===
+
+[[table_8-2]]
+.The structure of a coinbase transaction input
+[cols="1,1,1",options="header"]
+|===
+|Size |Field |Description
+
+|32 bytes |Transaction Hash |All bits are zero: Not a transaction hash reference
+|4 bytes |Output Index |All bits are ones: 0xFFFFFFFF
+|1 byte |Coinbase Data Size |Length of the coinbase data, from 2 to 100 bytes
+|Variable |Coinbase Data |Arbitrary data used for extra nonce and mining tags; in v2 blocks, must begin with block height
+|4 bytes |Sequence Number |Set to 0xFFFFFFFF
+|===
 
 In a coinbase transaction, the first two fields are set to values that
 do not represent a UTXO reference. Instead of a "transaction hash," the
@@ -574,50 +520,36 @@ To
 construct ((("mining", "constructing block header", id="mining-blockheader")))((("nodes", "miner nodes", "constructing block header", id="nodes-miner-blockheader")))((("block header", "constructing", id="block-header-construct")))the block header, the mining node needs to fill in six fields,
 as listed in <<block_header_structure_ch10>>.
 
-++++
-<table id="block_header_structure_ch10">
-<caption>The structure of the block header</caption>
-<thead>
-<tr>
-<th>Size</th>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Version</p></td>
-<td><p>A multipurpose bitfield</p></td>
-</tr>
-<tr>
-<td><p>32 bytes</p></td>
-<td><p>Previous Block Hash</p></td>
-<td><p>A reference to the hash of the previous (parent) block in the chain</p></td>
-</tr>
-<tr>
-<td><p>32 bytes</p></td>
-<td><p>Merkle Root</p></td>
-<td><p>A hash that is the root of the merkle tree of this block’s transactions</p></td>
-</tr>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Timestamp</p></td>
-<td><p>The approximate creation time of this block (seconds from Unix Epoch)</p></td>
-</tr>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Target</p></td>
-<td><p>The proof-of-work algorithm target for this block</p></td>
-</tr>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Nonce</p></td>
-<td><p>A counter used for the proof-of-work algorithm</p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[block_header_structure_ch10]]
+.The structure of the block header
+[cols="1,1,2",options="header"]
+|===
+|Size |Field |Description
+
+|4 bytes
+|Version
+|A multipurpose bitfield
+
+|32 bytes
+|Previous Block Hash
+|A reference to the hash of the previous (parent) block in the chain
+
+|32 bytes
+|Merkle Root
+|A hash that is the root of the merkle tree of this block's transactions
+
+|4 bytes
+|Timestamp
+|The approximate creation time of this block (seconds from Unix Epoch)
+
+|4 bytes
+|Target
+|The proof-of-work algorithm target for this block
+
+|4 bytes
+|Nonce
+|A counter used for the proof-of-work algorithm
+|===
 
 The version field was originally an integer field and was used in three
 upgrades to the Bitcoin network, those defined in BIPs 34, 66, and 65.
@@ -777,8 +709,6 @@ numerically less than the target. If we decrease the target, the task of
 finding a hash that is less than the target becomes more and more
 difficult.
 
-++++
-<p class="fix_tracking3">
 To give a simple analogy, imagine a game where players throw a pair of
 dice repeatedly, trying to throw less than a specified target. In the
 first round, the target is 12. Unless you throw double-6, you win. In
@@ -789,8 +719,6 @@ therefore be invalid. It takes more dice throws to win
 the lower the target gets. Eventually, when the target is 3 (the minimum
 possible), only one throw out of every 36, or about 3% of them, will produce a
 winning result.
-</p>
-++++
 
 From the perspective of an observer who knows that the target of the
 dice game is 3, if someone has succeeded in casting a winning throw it
@@ -818,8 +746,6 @@ $ echo "Hello, world! 32" | sha256sum
 09cb91f8250df04a3db8bd98f47c7cecb712c99835f4123e8ea51460ccbec314  -
 ----
 
-++++
-<p class="fix_tracking3">
 Although it only takes one hash computation to verify, it took
 us 32 hash computations to find a nonce that worked. If we had a lower
 target (higher difficulty), it would take many more hash computations to
@@ -827,8 +753,6 @@ find a suitable nonce, but only one hash computation for anyone to
 verify. And by knowing the target, anyone can estimate the
 difficulty using statistics and therefore know roughly how much work was needed
 to find such a nonce.
-</p>
-++++
 
 [TIP]
 ====
@@ -838,25 +762,20 @@ the target. A lower target means it is more difficult to find a hash
 below the target. The target and difficulty are inversely related.
 ====
 
-++++
-<p class="fix_tracking3">
 Bitcoin's PoW is very similar to the challenge
-shown in <a data-type="xref" href="#sha256_example_generator_output2">#sha256_example_generator_output2</a>. The miner constructs a
+shown in <<sha256_example_generator_output2>>. The miner constructs a
 candidate block filled with transactions. Next, the miner calculates the
 hash of this block's header and sees if it is smaller than the current
-<em>target</em>. If the hash is not less than the target, the miner will modify
+_target_. If the hash is not less than the target, the miner will modify
 the nonce (usually just incrementing it by one) and try again. At the
 current difficulty in the Bitcoin network, miners have to try
 a huge number of times before finding a nonce that results in a low
 enough block header hash.
-</p>
-++++
 
 [[target_bits]]
 ==== Target Representation
 
 //TODO:use visual representation like I did on bitcoin.org
-
 
 Block headers ((("mining", "proof-of-work algorithm", startref="mining-proof")))((("hash functions", "proof-of-work algorithm", startref="hash-proof")))((("proof-of-work algorithm", startref="proof-mining")))((("mining", "target representation", id="mining-target")))((("targets", "representation of", id="target-represent")))((("proof-of-work algorithm", "target representation", id="proof-target")))contain the target in a notation called "target
 bits" or just "bits," which in block 277,316 has the value of
@@ -869,35 +788,19 @@ block, therefore, the exponent is +0x19+ and the coefficient is
 The formula to calculate the difficulty target from this representation
 is:
 
-++++
-<ul class="simplelist">
-  <li>target = coefficient × 2<sup>(8 × (exponent – 3))</sup></li>
-</ul>
-++++
+* target = coefficient × 2^(8 × (exponent – 3))^
 
 Using that formula, and the difficulty bits value 0x1903a30c, we get:
 
-++++
-<ul class="simplelist">
-  <li>target = 0x03a30c × 2<sup>0x08 × (0x19 – 0x03)</sup></li>
-</ul>
-++++
+* target = 0x03a30c × 2^(0x08 × (0x19 – 0x03))^
 
 which is:
 
-++++
-<ul class="simplelist">
-  <li>22,829,202,948,393,929,850,749,706,076,701,368,331,072,452,018,388,575,715,328</li>
-</ul>
-++++
+* 22,829,202,948,393,929,850,749,706,076,701,368,331,072,452,018,388,575,715,328
 
 Or, in hexadecimal:
 
-++++
-<ul class="simplelist">
-  <li>0x0000000000000003A30C00000000000000000000000000000000000000000000</li>
-</ul>
-++++
+* `0x0000000000000003A30C00000000000000000000000000000000000000000000`
 
 This means that a valid block for height 277,316 is one that has a block
 header hash less than the target. In binary that number must
@@ -938,7 +841,6 @@ the difficulty increases (target decreases). If block discovery is
 slower than expected, the difficulty decreases (target increases).
 
 The equation can be summarized as:
-
 
 ----
 New Target = Old Target * (20,160 minutes / Actual Time of Last 2015 Blocks)
@@ -1028,8 +930,6 @@ perspective of each node. Eventually everything is synchronized to
 create a common blockchain. Bitcoin reaches consensus every 10 minutes about
 the state of the blockchain as it existed in the _past_.
 
-++++
-<p class="fix_tracking">
 The timestamps set in block headers are set by the miners. There is a
 certain degree of latitude allowed by the consensus rules to account for
 differences in clock accuracy between decentralized nodes. However, this
@@ -1040,8 +940,6 @@ the block subsidy reserved for future miners.  If they can set their
 times in the past for some blocks, they can use the current time for
 some other blocks, and so again make it look like there's a long time
 between blocks for the purpose of manipulating difficulty.
-</p>
-++++
 
 To prevent manipulation, Bitcoin has two consensus rules.  The first is
 that no node will accept any block with a time further in the future
@@ -1076,10 +974,7 @@ sequence, +CLTV+, and +CSV+.
 
 === Successfully Mining the Block
 
-++++
-<p class="fix_tracking">
-As
-we saw earlier, Jing's node has constructed a candidate block and
+As we saw earlier, Jing's node has constructed a candidate block and
 prepared it for mining. Jing has several hardware mining rigs with
 application-specific integrated circuits, where hundreds of thousands of
 integrated circuits run Bitcoin's double SHA256 algorithm in parallel at incredible
@@ -1091,8 +986,7 @@ the nonce is only
 32 bits, after exhausting all the nonce possibilities (about 4 billion),
 the mining hardware changes the block header (adjusting the coinbase
 extra nonce space, versionbits, or timestamp) and resets the nonce counter, testing
-new combinations.</p>
-++++
+new combinations.
 
 Almost 11 minutes after starting to mine a particular block, one of the
 hardware mining machines finds a solution and sends it back to the
@@ -1240,8 +1134,6 @@ forks (in addition to other problems), so many people prefer Bitcoin's
 10-minute blocks over shorter block ((("mining", "assembling blockchain", startref="mining-assemble")))((("blockchain", "assembling", startref="blockchain-assemble")))((("decentralized consensus", "assembling blockchain", startref="decentral-consensus-assemble")))intervals.
 ====
 
-
-
 === Mining and the Hash Lottery
 
 Bitcoin mining ((("mining", "competitiveness of", id="mining-competitive")))is an extremely competitive industry.
@@ -1257,7 +1149,7 @@ network in 2010.
 
 At the time of writing, it is believed that there are no more giant
 leaps left in Bitcoin mining equipment
-because the industry has reached the forefront of((("Moore&#x27;s Law"))) Moore's Law, which
+because the industry has reached the forefront of((("Moore's Law"))) Moore's Law, which
 stipulates that computing density will double approximately every 18
 months. Still, the mining power of the network continues to advance at
 a rapid pace.
@@ -1784,7 +1676,7 @@ hashing power is split between the chains. The mining power can be split
 in any proportion between the two chains. The new rules may only be
 followed by a minority, or by the vast majority of the mining power.
 
-Let's assume, for example, an 80%&#x2013;20% split, with the majority of
+Let's assume, for example, an 80%–20% split, with the majority of
 the mining power using the new consensus rules. Let's also assume that
 the fork occurs immediately after a retargeting period.
 
@@ -1855,7 +1747,7 @@ created under the new rules must be valid under the old rules too, but
 not vice versa. The new rules can only limit what is valid; otherwise,
 they will trigger a hard fork when rejected under the old rules.
 
-Soft forks can be implemented in a number of ways&#x2014;the term does
+Soft forks can be implemented in a number of ways—the term does
 not specify a particular method, but rather a set of methods that all have
 one thing in common: they don't require all nodes to upgrade or force
 nonupgraded nodes out of consensus.
@@ -2051,11 +1943,9 @@ later.
 BIP9 offers a proposal state diagram to illustrate the various stages
 and transitions for a proposal, as shown in <<bip9states>>.
 
-
 [[bip9states]]
 .BIP9 state transition diagram.
 image::images/mbc3_1203.png[BIP9 Proposal State Transition Diagram]
-
 
 Proposals start in the +DEFINED+ state once their parameters are known
 (defined) in the Bitcoin software. For blocks with MTP after the start

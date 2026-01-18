@@ -132,7 +132,6 @@ validation.
 .Combining input and output scripts to evaluate a transaction script.
 image::images/mbc3_0701.png["input_and_output_scripts"]
 
-
 ===== The script execution stack
 
 Bitcoin's ((("scripts", "stack", id="script-stack")))((("stack", id="stack")))scripting language is called a stack-based language because it
@@ -200,7 +199,6 @@ output script, note that the resulting UTXO can be spent by anyone with
 the arithmetic skills
 to know that the number 2 satisfies the script.
 
-
 [[simplemath_script]]
 .Bitcoin's script validation doing simple math.
 image::images/mbc3_0702.png["TxScriptSimpleMathExample"]
@@ -218,7 +216,6 @@ containing an +OP_IF+ statement that was not terminated by an +OP_ENDIF+
 opcode).  For details, see https://oreil.ly/J2DXt[Bitcoin
 Wiki's script page].
 ====
-
 
 The following is a slightly more complex script, which calculates
 2 + 7 – 3 + 1. Notice that when the script contains several operators in
@@ -259,7 +256,6 @@ failed to satisfy the spending conditions placed on the output.
 [[p2pkh]]
 ==== Pay to Public Key Hash
 
-
 A ((("P2PKH (pay to public key hash)")))((("addresses", "P2PKH (pay to public key hash)")))((("scripts", "P2PKH (pay to public key hash)")))pay to public key hash (P2PKH) script uses an output script that
 contains a hash that commits to a public key.  P2PKH is best known as
 the basis for a legacy Bitcoin address. A P2PKH output can be spent by
@@ -295,12 +291,7 @@ The result will be +TRUE+ if the input script
 has a valid signature from Bob's private key that corresponds to
 the public key hash set as an encumbrance.
 
-Figures pass:[<a data-type="xref" href="#P2PubKHash1"
-data-xrefstyle="select: labelnumber">#P2PubKHash1</a>] and pass:[<a
-data-type="xref" href="#P2PubKHash2" data-xrefstyle="select:
-labelnumber">#P2PubKHash2</a>] show (in two parts) a step-by-step
-execution of the combined script, which will prove this is a valid
-transaction.
+Figures <<P2PubKHash1>> and <<P2PubKHash2>> show (in two parts) a step-by-step execution of the combined script, which will prove this is a valid transaction.
 
 [[P2PubKHash1]]
 .Evaluating a script for a P2PKH transaction (part 1 of 2).
@@ -474,7 +465,6 @@ introduced in 2012 as a powerful new type of operation that greatly
 simplifies the use of complex scripts. To explain the need
 for P2SH, let's look at a practical example.
 
-
 Mohammed is an electronics importer based in Dubai. Mohammed's
 company uses Bitcoin's multisignature feature extensively for its
 corporate accounts. Multisignature scripts are one of the most common
@@ -523,38 +513,34 @@ redemption time rather than as an output script. <<without_p2sh>> shows
 the script without P2SH and <<with_p2sh>> shows the same script encoded
 with P2SH.
 
-++++
-<table id="without_p2sh">
-<caption>Complex script without P2SH</caption>
-<tbody>
-<tr>
-<td><p>Output script</p></td>
-<td><p>2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 OP_CHECKMULTISIG</p></td>
-</tr>
-<tr>
-<td><p>Input script</p></td>
-<td><p>Sig1 Sig2</p></td>
-</tr>
-</tbody>
-</table>
-<table id="with_p2sh">
-<caption>Complex script as P2SH</caption>
-<tbody>
-<tr>
-<td><p>Redeem script</p></td>
-<td><p>2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 OP_CHECKMULTISIG</p></td>
-</tr>
-<tr>
-<td><p>Output script</p></td>
-<td><p>OP_HASH160 &lt;20-byte hash of redeem script&gt; OP_EQUAL</p></td>
-</tr>
-<tr>
-<td><p>Input script</p></td>
-<td><p>Sig1 Sig2 &lt;redeem script&gt;</p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[without_p2sh]]
+.Complex script without P2SH
+[cols="1,2",options="header"]
+|===
+|Field |Script
+
+|Output script
+|2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 OP_CHECKMULTISIG
+
+|Input script
+|Sig1 Sig2
+|===
+
+[[with_p2sh]]
+.Complex script as P2SH
+[cols="1,2",options="header"]
+|===
+|Field |Script
+
+|Redeem script
+|2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 OP_CHECKMULTISIG
+
+|Output script
+|OP_HASH160 <20-byte hash of redeem script> OP_EQUAL
+
+|Input script
+|Sig1 Sig2 <redeem script>
+|===
 
 As you can see from the tables, with P2SH, the complex script that
 details the conditions for spending the output (redeem script) is not
@@ -958,7 +944,8 @@ Relative timelocks with +OP_CSV+ are especially useful when several
 (chained) transactions are created and signed but not propagated--that
 is, they're kept off the blockchain (_offchain_). A child transaction cannot be used until the
 parent transaction has been propagated, mined, and aged by the time
-specified in the relative timelock. One application of this use case is shown in <<state_channels>> and <<lightning_network>>.
+specified in the relative timelock. One application of this use case is shown in <<state_channels>> and <
+* >.
 
 +OP_CSV+ is defined((("transactions", "timelocks", "relative", startref="transaction-timelock-relative")))((("timelocks", "relative", startref="timelock-relative")))((("lock time", "relative", startref="locktime-relative")))((("scripts", "timelocks", "relative", startref="script-timelock-relative")))((("OP_CSV script opcode", startref="op-csv")))((("relative timelocks", startref="relative-timelock2"))) in detail in
 https://oreil.ly/z_Obw[BIP112,
@@ -1057,7 +1044,6 @@ valid preimage and a signature:
 
 Without presenting the preimage, Bob can't get to the part of the
 script that checks for his signature.
-
 
 This script can be written with an +OP_IF+ instead:
 
@@ -1222,7 +1208,6 @@ input script:
 ----
 OP_0 <Mohammed's Sig> <Zaira's Sig> OP_TRUE OP_TRUE
 ----
-
 
 [TIP]
 ====
@@ -1823,8 +1808,6 @@ multisignatures looks like every other scriptless
 multisignature and every single-signature, no privacy-reducing data is
 leaked.
 
-++++
-<p class="fix_tracking">
 There are two downsides of scriptless multisignatures.  The first is
 that all known secure algorithms for creating them for Bitcoin require more
 rounds of interaction or more careful management of state than
@@ -1834,8 +1817,6 @@ devices and the keys are physically distributed.  For example, if you
 keep a hardware signing device in a bank safe deposit box, you would
 need to visit that box once to create a scripted multisignature but
 possibly two or three times for a scriptless multisignature.
-</p>
-++++
 
 The other downside is that threshold signing doesn't reveal who signed.
 In scripted threshold signing, Alice, Bob, and Carol agree (for example)

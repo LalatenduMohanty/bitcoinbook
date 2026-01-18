@@ -401,7 +401,7 @@ which represents an offchain alteration of state, secured by eventual
 settlement in a blockchain. A payment channel is a state channel where
 the state being altered is the balance of a virtual currency.
 
-==== State Channels&#x2014;Basic Concepts and Terminology
+==== State Channels—Basic Concepts and Terminology
 
 A state channel((("payment channels", "state channels", id="payment-channel-state")))((("state channels", id="state-channel-terminology")))((("transactions", "state channels", id="transaction-state"))) is
 established between two parties through a transaction that locks a
@@ -507,7 +507,7 @@ changes the channel balance to credit 0.01 millibit to Fabian's address
 and refund 35.99 millibits back to Emma. The transaction signed by Emma
 consumes the 36 millibits output created by the funding transaction and
 creates two outputs: one for her refund, the other for Fabian's payment.
-The transaction is only partially signed&#x2014;it requires two
+The transaction is only partially signed—it requires two
 signatures (2-of-2), but only has Emma's signature. When Fabian's server
 receives this transaction, it adds the second signature (for the 2-of-2
 input) and returns it to Emma together with 1 second worth of video. Now
@@ -570,7 +570,7 @@ to fix those:
   channel fails because Emma can cheat by broadcasting a prior
   commitment that is in her favor.
 
-Both of these problems can be solved with timelocks&#x2014;let's look at
+Both of these problems can be solved with timelocks—let's look at
 how we could use transaction-level timelocks.
 
 Emma cannot risk funding a 2-of-2 multisig unless she has a guaranteed
@@ -1004,8 +1004,10 @@ to Carol, Carol to Diana, and Diana to Eric. For simplicity let's assume
 each channel is funded with 2 bitcoins by each participant, for a total
 capacity of 4 bitcoins in each channel.
 
-<<lightning_network_fig>> shows five participants in an LN, connected by bidirectional payment channels that can be linked
-to make a payment from Alice to Eric (see <<lightning_network>>).
+<
+* > shows five participants in an LN, connected by bidirectional payment channels that can be linked
+to make a payment from Alice to Eric (see <
+* >).
 
 [[lightning_network_fig]]
 .A series of bidirectional payment channels linked to form an LN that can route a payment from Alice to Eric.
@@ -1128,20 +1130,18 @@ announcements to their peers in a "flooding" model, similar to how
 Bitcoin propagates transactions.
 
 ++++
-<p class="fix_tracking3">
+
 In our previous example, Alice's node uses one of these route discovery
 mechanisms to find one or more paths connecting her node to Eric's node.
 Once Alice's node has constructed a path, she will initialize that path
 through the network by propagating a series of encrypted and nested
 instructions to connect each of the adjacent payment channels.
-</p>
 
-<p class="fix_tracking2">
 Importantly, this path is only known to Alice's node. All other
 participants in the payment route see only the adjacent nodes. From
 Carol's perspective, this looks like a payment from Bob to Diana. Carol
 does not know that Bob is actually relaying a payment from Alice. She
-also doesn't know that Diana will be relaying a payment to Eric.</p>
+also doesn't know that Diana will be relaying a payment to Eric.
 ++++
 
 This is a critical feature of the LN because it ensures
@@ -1155,28 +1155,27 @@ ensures that a payment sender can construct and communicate a path
 through the LN such that:
 
 ++++
-<ul>
-<li> Intermediate nodes can verify and decrypt their portion of route
-  information and find the next hop.</li>
 
-<li> Other than the previous and next hops, they cannot learn about any
-  other nodes that are part of the path.</li>
+*  Intermediate nodes can verify and decrypt their portion of route
+  information and find the next hop.
 
-<li>They cannot identify the length of the payment path or their own
-  position in that path.</li>
+*  Other than the previous and next hops, they cannot learn about any
+  other nodes that are part of the path.
 
-<li>Each part of the path is encrypted in such a way that a network-level
+* They cannot identify the length of the payment path or their own
+  position in that path.
+
+* Each part of the path is encrypted in such a way that a network-level
   attacker cannot associate the packets from different parts of the path
-  to each other.</li>
+  to each other.
 
-<li><p class="fix_tracking3">Unlike Tor (an onion-routed anonymization protocol on the internet),
+* Unlike Tor (an onion-routed anonymization protocol on the internet),
   there are no "exit nodes" that can be placed under surveillance. The
   payments do not need to be transmitted to the Bitcoin blockchain; the
-  nodes just update channel balances.</p>
-  </li>
-  </ul>
+  nodes just update channel balances.
+  
+  
 ++++
-
 
 Using this onion-routed protocol, Alice wraps each element of the path
 in a layer of encryption, starting with the end and working backward.

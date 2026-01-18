@@ -2,17 +2,17 @@
 == Transaction Fees
 
 ++++
-<p class="fix_tracking">
-The digital signature we saw Alice create in <a data-type="xref" href="#c_signatures">#c_signatures</a> only
+
+The digital signature we saw Alice create in <<c_signatures>> only
 proves that she knows her private key and that she committed to a
 transaction that pays Bob.  She can create another signature that
 instead commits to a transaction paying Carol—a transaction that spends
 the same output (bitcoins) that she used to pay Bob.  Those two
-transactions are now <em>conflicting transactions</em> because only one
+transactions are now _conflicting transactions_ because only one
 transaction spending a particular output can be included in the valid
 blockchain with the most proof of work—the blockchain that full nodes
 use to determine which keys control which bitcoins.
-</p>
+
 ++++
 
 To((("conflicting transactions")))((("transactions", "conflicts in"))) protect himself against conflicting transactions, it would be wise
@@ -27,12 +27,12 @@ that block gets to choose which transactions to include.  Miners may
 select transactions by any criteria they want, including refusing to
 include any transactions at all.
 
-++++
-<div data-type="note">
-<p class="fix_tracking"> When we say "transactions" in this chapter, we refer to every
+[NOTE]
+====
+When we say "transactions" in this chapter, we refer to every
 transaction in a block except for the first transaction.  The first
-transaction in a block is a <em>coinbase transaction</em>, described in
-<a data-type="xref" href="#coinbase_transactions">#coinbase_transactions</a>, which allows the miner of the block to
+transaction in a block is a _coinbase transaction_, described in
+<<coinbase_transactions>>, which allows the miner of the block to
 collect their reward for producing the block.  Unlike other
 transactions, a coinbase transaction doesn't spend the output of a
 previous transaction and is also an exception to several other rules
@@ -40,10 +40,7 @@ that apply to other transactions.  Coinbase transactions don't pay
 transaction fees, don't need to be fee bumped, aren't subject to
 transaction pinning, and are largely uninteresting to the following
 discussion about fees—so we're going to ignore them in this chapter.
-</p>
-</div>
-++++
-
+====
 
 The criterion that almost all miners use to select which transactions to
 include in their blocks is to maximize their revenue.  Bitcoin was
@@ -459,14 +456,14 @@ problem.
 === Transaction Pinning
 
 ++++
-<p class="fix_tracking">
+
 Although both RBF and CPFP fee bumping work in the basic cases we
 described, there are rules related to both
 methods that are designed to prevent denial-of-service attacks on miners
 and relaying full nodes.  An unfortunate side effect of those rules
 is that they can sometimes prevent someone from being able to use fee
 bumping.  Making it impossible or difficult to fee bump a transaction is
-called <em>transaction pinning</em>.</p>
+called _transaction pinning_.
 ++++
 
 One((("transaction fees", "fee bumping", "transaction pinning", id="transaction-fee-bump-pin")))((("fee bumping", "transaction pinning", id="fee-bump-pin")))((("transaction pinning", id="transaction-pin")))((("RBF (replace by fee) fee bumping", "transaction pinning", id="rbf-pin")))((("CPFP (child pays for parent) fee bumping", "transaction pinning", id="cpfp-pin"))) of the major denial of service concerns revolves around the effect of
@@ -535,13 +532,13 @@ Protocol developers have been working on mitigating problems with
 transaction pinning for several years.  One partial solution is
 described in <<cpfp_carve_out>>.  Several other solutions have been
 proposed, and at least one solution is being actively ((("transaction fees", "fee bumping", "transaction pinning", startref="transaction-fee-bump-pin")))((("fee bumping", "transaction pinning", startref="fee-bump-pin")))((("transaction pinning", startref="transaction-pin")))((("RBF (replace by fee) fee bumping", "transaction pinning", startref="rbf-pin")))((("CPFP (child pays for parent) fee bumping", "transaction pinning", startref="cpfp-pin")))((("transaction fees", "fee bumping", "CPFP carve outs", id="transaction-fee-bump-carveout")))((("fee bumping", "CPFP carve outs", id="fee-bump-carveout")))((("carve outs (CPFP)", id="carveout")))((("CPFP (child pays for parent) fee bumping", "carve outs", id="cpfp-carveout")))developed as of
-this writing&mdash;https://oreil.ly/300dv[ephemeral anchors].
+this writing—https://oreil.ly/300dv[ephemeral anchors].
 
 [[cpfp_carve_out]]
 === CPFP Carve Out and Anchor Outputs
 
 ++++
-<p class="fix_tracking2">
+
 In 2018, developers working on LN had a problem.
 Their protocol uses transactions that require signatures from two
 different parties.  Neither party wants to trust the other, so they sign
@@ -551,7 +548,7 @@ later time when the other party may not want to (or be able to) fulfill
 its obligations.  The problem with this approach is that the
 transactions might need to be broadcast at an unknown time, far in the future, beyond any
 reasonable ability to estimate an appropriate fee rate for the
-transactions.</p>
+transactions.
 ++++
 
 In theory, the developers could have designed their transactions to
@@ -573,7 +570,7 @@ it would exceed the other limits as long as it is a direct child of an
 unconfirmed transaction with no unconfirmed ancestors.
 
 ++++
-<p class="fix_tracking">
+
 For example, Bob and Mallory both co-sign a transaction with two
 outputs, one to each of them.  Mallory broadcasts that transaction and
 uses her output to attach either 25 child transactions or any smaller
@@ -582,7 +579,7 @@ carve-out, Bob would be unable to attach another child transaction to
 his output for CPFP fee bumping.  With carve-out, he can spend one of
 the two outputs in the transaction, the one that belongs to him, as long
 as his child transaction is less than 1,000 vbytes in size (which should
-be more than enough space).</p>
+be more than enough space).
 ++++
 
 It's not allowed to use CPFP carve-out more than once, so it only works
@@ -609,7 +606,6 @@ miners:
 {Fees = Sum(Inputs) - Sum(Outputs)}
 \end{equation}
 ++++
-
 
 This is a somewhat confusing element of transactions and an important
 point to understand because if you are constructing your own
@@ -663,7 +659,7 @@ lock time that limits those transactions to being included in the next
 block or any later block. In our
 scenario, our wallet would set lock time to 100,001 on any
 transaction it created. Under normal circumstances, this lock time has
-no effect&#x2014;the transactions could only be included in block
+no effect—the transactions could only be included in block
 #100,001 anyway; it's the next block.
 
 But under a reorganization attack, the miners would not be able to pull

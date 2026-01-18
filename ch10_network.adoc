@@ -81,7 +81,6 @@ mining or wallet functions. These nodes act as network edge routers,
 allowing various other services (exchanges, wallets, block explorers,
 merchant payment processing) to be built on top.
 
-
 [role="less_space pagebreak-before"]
 === Compact Block Relay
 
@@ -319,7 +318,6 @@ its neighbors, asking them to return a list of IP addresses of other
 peers. That way, a node can find peers to connect to and advertise its
 existence on the network for other nodes to find it.
 <<address_propagation>> shows the address discovery protocol.
-
 
 [[address_propagation]]
 .Address propagation and discovery.
@@ -743,14 +741,16 @@ incoming transaction. The full node checks several parts of the
 transaction against the bloom filter, looking for a match including:
 
 ++++
-<ul>
-<li>The transaction ID</li>
-<li>The data components from the scripts of each of the transaction outputs (every key and hash in the script)</li>
-<li class="less_space pagebreak-before">Each of the transaction inputs</li>
-<li>Each of the input signature data components (or witness scripts)</li>
-</ul>
-++++
 
+* The transaction ID
+
+* The data components from the scripts of each of the transaction outputs (every key and hash in the script)
+
+* Each of the transaction inputs
+
+* Each of the input signature data components (or witness scripts)
+
+++++
 
 By checking against all these components, bloom filters can be used to
 match public key hashes, scripts, +OP_RETURN+ values, public keys in
@@ -925,43 +925,17 @@ If we count the frequency of each difference occurring, we see that the
 small differences are much more likely to occur than the large
 differences:
 
-++++
-<table>
+[cols="1,1",options="header"]
+|===
+|Difference |Occurrences
 
-<thead>
-<tr>
-<th>Difference</th>
-<th>Occurrences</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>0</p></td>
-<td><p>6</p></td>
-</tr>
-<tr>
-<td><p>1</p></td>
-<td><p>10</p></td>
-</tr>
-<tr>
-<td><p>2</p></td>
-<td><p>8</p></td>
-</tr>
-<tr>
-<td><p>3</p></td>
-<td><p>6</p></td>
-</tr>
-<tr>
-<td><p>4</p></td>
-<td><p>4</p></td>
-</tr>
-<tr>
-<td><p>5</p></td>
-<td><p>2</p></td>
-</tr>
-</tbody>
-</table>
-++++
+|0 |6
+|1 |10
+|2 |8
+|3 |6
+|4 |4
+|5 |2
+|===
 
 If we know that we might need to store large numbers (because large
 differences can happen, even if they are rare), but we'll most often need
@@ -1142,7 +1116,6 @@ block if it contained an accurate commitment.  That would allow a
 lightweight client to download an 80-byte block header, a (usually)
 small coinbase transaction, and the filter for that block to receive
 strong evidence that the filter ((("Bitcoin network", "compact block filters", startref="bitcoin-network-compact-filter")))((("compact block filters", startref="compact-block-filter")))((("blocks", "compact block filters", startref="block-compact-filter")))was accurate.
-
 
 [role="less_space pagebreak-before"]
 === Lightweight Clients and Privacy

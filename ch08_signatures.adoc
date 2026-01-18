@@ -127,36 +127,24 @@ and updating a partially signed transaction.
 There are three +SIGHASH+ flags: +ALL+, +NONE+, and +SINGLE+, as shown
 in <<sighash_types_and_their>>.
 
-++++
-<table id="sighash_types_and_their">
-<caption>
-<span class="plain"><code>SIGHASH</code></span> types and their meanings</caption>
-<thead>
-<tr>
-<th><code>SIGHASH</code> flag</th>
-<th>Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p><code>ALL</code></p></td>
-<td><p><code>0x01</code></p></td>
-<td><p>Signature applies to all inputs and outputs</p></td>
-</tr>
-<tr>
-<td><p><code>NONE</code></p></td>
-<td><p><code>0x02</code></p></td>
-<td><p>Signature applies to all inputs, none of the outputs</p></td>
-</tr>
-<tr>
-<td><p><code>SINGLE</code></p></td>
-<td><p><code>0x03</code></p></td>
-<td><p>Signature applies to all inputs but only the one output with the same index number as the signed input</p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[sighash_types_and_their]]
+.`SIGHASH` types and their meanings
+[cols="1,1,2",options="header"]
+|===
+|`SIGHASH` flag |Value |Description
+
+|`ALL`
+|`0x01`
+|Signature applies to all inputs and outputs
+
+|`NONE`
+|`0x02`
+|Signature applies to all inputs, none of the outputs
+
+|`SINGLE`
+|`0x03`
+|Signature applies to all inputs but only the one output with the same index number as the signed input
+|===
 
 In addition, there is a modifier flag, +SIGHASH_ANYONECANPAY+, which can
 be combined with each of the preceding flags. When +ANYONECANPAY+ is
@@ -166,36 +154,24 @@ and is applied by bitwise OR, resulting in the combined flags as shown
 in <<sighash_types_with_modifiers>>.
 
 [role="less_space pagebreak-before"]
-++++
-<table id="sighash_types_with_modifiers">
-<caption>
-<span class="plain"><code>SIGHASH</code></span> types with modifiers and their meanings</caption>
-<thead>
-<tr>
-<th><code>SIGHASH</code> flag</th>
-<th>Value</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p><code>ALL|ANYONECANPAY</code></p></td>
-<td><p><code>0x81</code></p></td>
-<td><p>Signature applies to one input and all outputs</p></td>
-</tr>
-<tr>
-<td><p><code>NONE|ANYONECANPAY</code></p></td>
-<td><p><code>0x82</code></p></td>
-<td><p>Signature applies to one input, none of the outputs</p></td>
-</tr>
-<tr>
-<td><p><code>SINGLE|ANYONECANPAY</code></p></td>
-<td><p><code>0x83</code></p></td>
-<td><p>Signature applies to one input and the output with the same index number</p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[sighash_types_with_modifiers]]
+.`SIGHASH` types with modifiers and their meanings
+[cols="1,1,2",options="header"]
+|===
+|`SIGHASH` flag |Value |Description
+
+|`ALL\|ANYONECANPAY`
+|`0x81`
+|Signature applies to one input and all outputs
+
+|`NONE\|ANYONECANPAY`
+|`0x82`
+|Signature applies to one input, none of the outputs
+
+|`SINGLE\|ANYONECANPAY`
+|`0x83`
+|Signature applies to one input and the output with the same index number
+|===
 
 The way +SIGHASH+ flags are applied during signing and verification is
 that a copy of the transaction is made and certain fields within are
@@ -218,7 +194,7 @@ Let's look at some of the other +SIGHASH+ types and how they can be used
 in practice:
 
 +ALL|ANYONECANPAY+ :: This ((("crowdfunding")))construction can be used to make a
-"crowdfunding&#x201d;-style transaction. Someone attempting to raise
+"crowdfunding"-style transaction. Someone attempting to raise
 funds can construct a transaction with a single output. The single
 output pays the "goal" amount to the fundraiser. Such a transaction is
 obviously not valid, as it has no inputs. However, others can now amend
@@ -453,7 +429,7 @@ Bob waits to receive Alice's public nonce
   has committed to her public nonce.
 
 ++++
-<p class="fix_tracking">
+
 The interactive identity protocol described here matches part of Claus
 Schnorr's original description, but it lacks two essential features we
 need for the decentralized Bitcoin network.  The first of these is that
@@ -469,7 +445,7 @@ disagreement with every other node that did authenticate it.  That's not
 acceptable for a consensus system like Bitcoin.  For Bitcoin to work, we
 need a protocol that doesn't require interaction between Alice and each
 node that wants to authenticate her.
-</p>
+
 ++++
 
 A simple technique, known as the Fiat-Shamir transform after its
@@ -876,7 +852,6 @@ integers are modulus p:
 s = k^{-1} (Hash(m) + x \times R)
 \end{equation}
 ++++
-
 
 where:
 

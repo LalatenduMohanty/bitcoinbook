@@ -14,26 +14,20 @@ transactions, the network, and ((("Bitcoin", "operational overview", id="bitcoin
 
 === Bitcoin Overview
 
-++++
-<p class="fix_tracking">
 The Bitcoin system consists of users with wallets containing keys,
 transactions that are propagated across the network, and miners who
 produce (through competitive computation) the consensus blockchain,
 which is the authoritative journal of all transactions.
-</p>
 
-<p class="fix_tracking2">
 Each example in this chapter is based
 on an actual transaction made on the Bitcoin network, simulating the
 interactions between several users by sending
 funds from one wallet to another. While tracking a transaction through
-the Bitcoin network to the blockchain, we will use a <em>blockchain
-explorer</em> site to visualize each step. A blockchain explorer is a web
+the Bitcoin network to the blockchain, we will use a _blockchain
+explorer_ site to visualize each step. A blockchain explorer is a web
 application that operates as a Bitcoin search engine, in that it allows
 you to search for addresses, transactions, and blocks and see the
 relationships and flows between them.
-</p>
-++++
 
 Popular blockchain explorers include the following:
 
@@ -99,7 +93,6 @@ This allows a Bitcoin wallet application to prefill the
 information used to send the payment while showing a human-readable
 description to the user. You can scan the QR code with a bitcoin wallet
 application to see what Alice would see:
-
 
 [[invoice-URI]]
 .The invoice QR code encodes the following URI, defined in BIP21:
@@ -355,7 +348,6 @@ find enough to pay for the podcast. In both cases, there might be a need
 to get some change back, which we will see in the next section, as the
 wallet application creates the transaction outputs (payments).
 
-
 ==== Creating the Outputs
 
 A transaction output((("outputs", "constructing transactions"))) is
@@ -409,7 +401,6 @@ connecting to several other Bitcoin peers. The purpose of the Bitcoin
 network is to propagate transactions and blocks to all participants.
 
 ===== How it propagates
-
 
 Peers in ((("Bitcoin", "as peer-to-peer network", secondary-sortas="peer-to-peer network")))((("peer-to-peer networks, Bitcoin as")))the Bitcoin peer-to-peer network are programs that have both
 the software logic and the data necessary for them to fully verify the
@@ -470,7 +461,6 @@ assumption that any transaction in a block is a valid transaction.
 * Mining currently creates new bitcoins in each block, almost like a central bank
 printing new money. The amount of bitcoin created per block is limited
 and diminishes with time, following a fixed issuance schedule.
-
 
 Mining achieves a fine balance between cost and reward. Mining uses
 electricity to solve a computational problem. A successful miner will

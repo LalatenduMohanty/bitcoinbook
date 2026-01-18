@@ -267,7 +267,6 @@ single person can compromise the funds. Multisignature addresses can
 also offer redundancy, where a single person holds several keys that are
 stored in different locations.
 
-
 ==== Survivability
 
 One important

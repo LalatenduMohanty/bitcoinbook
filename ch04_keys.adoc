@@ -360,7 +360,6 @@ K = (x, y)
 \end{equation}
 ++++
 
-
 where,
 
 ----
@@ -368,10 +367,8 @@ x = F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A
 y = 07CF33DA18BD734C600B96A72BBC4749D5141C90EC8AC328AE52DDFE2E505BDB
 ----
 
-
-
 To visualize multiplication of a point with an integer, we will use the
-simpler elliptic curve over real numbers&#x2014;remember, the math is
+simpler elliptic curve over real numbers—remember, the math is
 the same. Our goal is to find the multiple _kG_ of the generator point
 _G_, which is the same as adding _G_ to itself, _k_ times in a row. In
 elliptic curves, adding a point to itself is the equivalent of drawing a
@@ -422,7 +419,6 @@ phone:
 x = F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A
 y = 07CF33DA18BD734C600B96A72BBC4749D5141C90EC8AC328AE52DDFE2E505BDB
 ----
-
 
 Instead of direct public key entry, the earliest version of Bitcoin
 software allowed a spender to enter the receiver's IP address, as shown in <<bitcoin_01_send>>.  This
@@ -692,8 +688,6 @@ encoding process.
 .Base58check encoding: a base58, versioned, and checksummed format for unambiguously encoding bitcoin data.
 image::images/mbc3_0406.png["Base58checkEncoding"]
 
-++++
-<p class="fix_tracking2">
 In Bitcoin, other data besides public key commitments are presented to the user in
 base58check encoding to make that data compact, easy to read, and easy to detect
 errors. The version prefix in base58check encoding is used to create
@@ -704,54 +698,38 @@ that is encoded and how to use it. This is what differentiates, for
 example, a base58check-encoded Bitcoin address that starts with a 1 from
 a base58check-encoded private key wallet import format (WIF) that starts with a 5. Some example
 version prefixes and the resulting base58 characters are shown in
-<a data-type="xref" href="#base58check_versions">#base58check_versions</a>.
-</p>
-++++
+<<base58check_versions>>.
 
-++++
-<table id="base58check_versions">
-<caption>Base58check version prefix and encoded result examples</caption>
-<thead>
-<tr>
-<th>Type</th>
-<th>Version prefix (hex)</th>
-<th>Base58 result prefix</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>Address for pay to public key hash (P2PKH)</p></td>
-<td><p>0x00</p></td>
-<td><p>1</p></td>
-</tr>
-<tr>
-<td><p>Address for pay to script hash (P2SH)</p></td>
-<td><p>0x05</p></td>
-<td><p>3</p></td>
-</tr>
-<tr>
-<td><p>Testnet Address for P2PKH</p></td>
-<td><p>0x6F</p></td>
-<td><p>m or n</p></td>
-</tr>
-<tr>
-<td><p>Testnet Address for P2SH</p></td>
-<td><p>0xC4</p></td>
-<td><p>2</p></td>
-</tr>
-<tr>
-<td><p>Private Key WIF</p></td>
-<td><p>0x80</p></td>
-<td><p>5, K, or L</p></td>
-</tr>
-<tr>
-<td><p>BIP32 Extended Public Key</p></td>
-<td><p>0x0488B21E</p></td>
-<td><p>xpub</p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[base58check_versions]]
+.Base58check version prefix and encoded result examples
+[cols="2,1,1",options="header"]
+|===
+|Type |Version prefix (hex) |Base58 result prefix
+
+|Address for pay to public key hash (P2PKH)
+|0x00
+|1
+
+|Address for pay to script hash (P2SH)
+|0x05
+|3
+
+|Testnet Address for P2PKH
+|0x6F
+|m or n
+
+|Testnet Address for P2SH
+|0xC4
+|2
+
+|Private Key WIF
+|0x80
+|5, K, or L
+
+|BIP32 Extended Public Key
+|0x0488B21E
+|xpub
+|===
 
 Combining public keys, hash-based commitments, and base58check
 encoding, <<pubkey_to_address>> illustrates the conversion of a public key
@@ -765,7 +743,6 @@ image::images/mbc3_0407.png["pubkey_to_address"]
 === Compressed Public Keys
 
 //https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2011-November/000778.html
-
 
 When ((("public key cryptography", "compressed public keys", id="pub-key-compress")))((("compressed public keys", id="compress-pub-key")))((("uncompressed public keys", id="uncompress-pub-key")))Bitcoin was first authored, its developers only knew how to create
 65-byte public keys.  However, a later developer became aware of an
@@ -798,12 +775,10 @@ Here's the same public key shown as a 520-bit number (130 hex digits)
 with the prefix +04+ followed by +x+ and then +y+ coordinates, as +04 x
 y+:
 
-++++
-<pre data-type="programlisting">
+----
 K = 04F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A\
     07CF33DA18BD734C600B96A72BBC4749D5141C90EC8AC328AE52DDFE2E505BDB
-</pre>
-++++
+----
 
 Whereas uncompressed public keys have a prefix of +04+, compressed
 public keys start with either a +02+ or a +03+ prefix. Let's look at why
@@ -826,11 +801,9 @@ the software to correctly deduce the _y_ coordinate from the _x_
 coordinate and uncompress the public key to the full coordinates of the
 point. Public key compression is illustrated in <<pubkey_compression>>.
 
-
 [[pubkey_compression]]
 .Public key compression.
 image::images/mbc3_0408.png["pubkey_compression"]
-
 
 Here's the same public key generated in <<public_key_derivation>>, shown as a compressed
 public key stored in 264 bits (66 hex digits) with the prefix +03+
@@ -851,8 +824,6 @@ key can produce a public key expressed in two different formats
 (compressed and uncompressed) that produce two different Bitcoin
 addresses. However, the private key is identical for both Bitcoin
 addresses.
-
-
 
 Compressed public keys are now the default in almost all Bitcoin
 software and were required when using certain new features added
@@ -882,7 +853,7 @@ signature.  In <<addresses_for_p2pkh>>, an appropriate public key also needed to
 provided.
 
 ++++
-<p class="fix_tracking3">
+
 For a spender (like Alice) to place the constraints Bob wants
 in the output script she uses to pay him, Bob needs to communicate those
 constraints to her.  This is similar to the problem of Bob needing to
@@ -892,7 +863,7 @@ quite large—potentially thousands of bytes.  That's not only thousands
 of bytes that need to be communicated to Alice, but thousands of bytes
 for which she needs to pay transaction fees every time she wants to spend money to Bob.  However, the solution of using hash functions to create
 small commitments to large amounts of data also applies here.
-</p>
+
 ++++
 
 The BIP16 upgrade to the Bitcoin protocol in 2012 allows an
@@ -1104,9 +1075,9 @@ The "32" stands for the number of characters in the bech32 alphabet
 .Bech32 typo detection
 ====
 Address:
-  bc1p9nh05ha8wrljf7ru236awpass:[<u><strong>n</strong></u>]4t2x0d5ctkkywmpass:[<u><strong>v</strong></u>]9sclnm4t0av2vgs4k3au7
+  bc1p9nh05ha8wrljf7ru236aw**n**4t2x0d5ctkkywm**v**9sclnm4t0av2vgs4k3au7
 
-Detected errors shown in bold and underlined.  Generated using the
+Detected errors shown in bold.  Generated using the
 https://oreil.ly/paWIx[bech32 address decoder demo].
 ====
 
@@ -1172,8 +1143,6 @@ bc1pqqqsq9txsqqqqqqqqqqqp
 //    addr = encode('bc', 1, foo.to_bytes(3,'big'))
 //    print(foo, addr)
 
-
-
 For the initial version of segwit (version 0), this wasn't a practical
 concern.  Only two valid lengths were defined for v0 segwit outputs: 22
 bytes and 34 bytes.  Those correspond to bech32 addresses that are 42 characters
@@ -1205,8 +1174,6 @@ last six (the checksum).  That means a wallet will need to know which
 version is in use in order to validate the checksum, but both address
 types contain an internal version byte that makes determining that easy.
 
-
-
 To work with both bech32 and((("encoding", "bech32m addresses", id="encode-bech32m")))((("decoding", "addresses", see="addresses"))) bech32m, we'll look at the encoding and parsing rules for
 bech32m Bitcoin addresses since they encompass the ability to parse
 bech32 addresses and are the current recommended address format for
@@ -1217,27 +1184,18 @@ rules in BIP173 for creating your own HRPs, but for Bitcoin you only
 need to know about the HRPs already chosen, shown in
 <<bech32_hrps_for_bitcoin>>.
 
-++++
-<table id="bech32_hrps_for_bitcoin">
-<caption>Bech32 HRPs for Bitcoin</caption>
-<thead>
-<tr>
-<th>HRPs</th>
-<th>Network</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>bc</p></td>
-<td><p>Bitcoin mainnet</p></td>
-</tr>
-<tr>
-<td><p>tb</p></td>
-<td><p>Bitcoin testnet</p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[bech32_hrps_for_bitcoin]]
+.Bech32 HRPs for Bitcoin
+[cols="1,1",options="header"]
+|===
+|HRPs |Network
+
+|bc
+|Bitcoin mainnet
+
+|tb
+|Bitcoin testnet
+|===
 
 The HRP is followed by a separator, the number "1."  Earlier proposals
 for a protocol separator used a colon but some operating systems and
@@ -1298,36 +1256,24 @@ scripts are listed in <<scripts_for_diff_segwit_outputs>>.
 // bc1sqqqqkfw08p
 // O_16 OP_PUSH2 0000
 
-++++
-<table id="scripts_for_diff_segwit_outputs">
-<caption>Scripts for different types of segwit outputs</caption>
-<thead>
-<tr>
-<th>Output type</th>
-<th>Example script</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>P2WPKH</p></td>
-<td><p><code>OP_0 2b626ed108ad00a944bb2922a309844611d25468</code></p></td>
-</tr>
-<tr>
-<td><p>P2WSH</p></td>
-<td><p><code>OP_0 648a32e50b6fb7c5233b228f60a6a2ca4158400268844c4bc295ed5e8c3d626f</code></p></td>
-</tr>
-<tr>
-<td><p>P2TR</p></td>
-<td><p><code>OP_1 2ceefa5fa770ff24f87c5475d76eab519eda6176b11dbe1618fcf755bfac5311</code></p></td>
-</tr>
-<tr>
-<td><p>Future Example</p></td>
-<td><p><code>OP_16 0000</code></p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[scripts_for_diff_segwit_outputs]]
+.Scripts for different types of segwit outputs
+[cols="1,2",options="header"]
+|===
+|Output type |Example script
 
+|P2WPKH
+|`OP_0 2b626ed108ad00a944bb2922a309844611d25468`
+
+|P2WSH
+|`OP_0 648a32e50b6fb7c5233b228f60a6a2ca4158400268844c4bc295ed5e8c3d626f`
+
+|P2TR
+|`OP_1 2ceefa5fa770ff24f87c5475d76eab519eda6176b11dbe1618fcf755bfac5311`
+
+|Future Example
+|`OP_16 0000`
+|===
 
 For the P2WPKH output, the witness program contains a commitment constructed in exactly the same
 way as the commitment for a P2PKH output seen in <<addresses_for_p2pkh>>.  A public key is passed into a SHA256 hash
@@ -1349,10 +1295,10 @@ it should be a public key that commits to some additional data.  We'll
 learn more about that commitment in <<taproot>>.
 
 ++++
-<p class="fix_tracking2">
+
 For the example of a future segwit version, we simply use the highest
 possible segwit version number (16) and the smallest allowed witness
-program (2 bytes) with a null value.</p>
+program (2 bytes) with a null value.
 ++++
 
 Now that we know the version number and the witness program, we can
@@ -1455,95 +1401,34 @@ support for new Bitcoin features as soon as they become ((("public key cryptogra
 
 The ((("private keys", "formats", id="private-key-format")))private key
 can be represented in a number of different formats, all of which
-correspond to the same 256-bit number. <<table_4-2>> shows several common
-formats used to represent private keys. Different formats are used in
-different circumstances. Hexadecimal and raw binary formats are used
-internally in software and rarely shown to users. The WIF is used for
-import/export of keys between wallets and often used in QR code
-(barcode) representations of private keys.
+correspond to the same 256-bit number. See <<table_4-2>>.
 
-.Modern Relevancy of Private Key Formats
-****
-Early Bitcoin ((("wallets", "private key formats")))wallet software generated one or more independent private
-keys when a new user wallet was initialized.  When the initial set of
-keys had all been used, the wallet might generate additional private
-keys.  Individual private keys could be exported or imported.  Any time
-new private keys were generated or imported, a new backup of the wallet
-needed to be created.
+[[table_4-2]]
+.Private key representations (encoding formats)
+[cols="1,1,1",options="header"]
+|===
+|Type |Prefix |Description
 
-Later Bitcoin wallets began using deterministic wallets where all
-private keys are generated from a single seed value.  These wallets only
-ever need to be backed up once for typical onchain use.  However, if a
-user exports a single private key from one of these wallets and an
-attacker acquires that key plus some nonprivate data about the wallet,
-they can potentially derive any private key in the wallet--allowing the
-attacker to steal all of the wallet funds.  Additionally, keys cannot be
-imported into deterministic wallets.  This means almost no modern
-wallets support the ability to export or import an individual key.  The
-information in this section is mainly of interest to anyone needing
-compatibility with early Bitcoin wallets.
+|Hex |None |64 hexadecimal digits
+|WIF |5 |Base58check encoding: base58 with version prefix of 128 and 32-bit checksum
+|WIF-compressed |K or L |As above, with added suffix 0x01 before encoding
+|===
 
-See <<hd_wallets>> for more information.
+[[table_4-3]]
+.Example: Same key, different formats
+[cols="1,1",options="header"]
+|===
+|Format |Private key
 
-****
+|Hex
+|1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a526aedd
 
-++++
-<table id="table_4-2">
-<caption>Private key representations (encoding formats)</caption>
-<thead>
-<tr>
-<th>Type</th>
-<th>Prefix</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>Hex</p></td>
-<td><p>None</p></td>
-<td><p>64 hexadecimal digits</p></td>
-</tr>
-<tr>
-<td><p>WIF</p></td>
-<td><p>5</p></td>
-<td><p>Base58check encoding: base58 with version prefix of 128 and 32-bit checksum</p></td>
-</tr>
-<tr>
-<td><p>WIF-compressed</p></td>
-<td><p>K or L</p></td>
-<td><p>As above, with added suffix 0x01 before encoding</p></td>
-</tr>
-</tbody>
-</table>
-++++
+|WIF
+|5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
 
-<<table_4-3>> shows the private key generated in several different formats.
-
-++++
-<table id="table_4-3">
-<caption>Example: Same key, different formats</caption>
-<thead>
-<tr>
-<th>Format</th>
-<th>Private key</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>Hex</p></td>
-<td><p>1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a526aedd</p></td>
-</tr>
-<tr>
-<td><p>WIF</p></td>
-<td><p>5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn</p></td>
-</tr>
-<tr>
-<td><p>WIF-compressed</p></td>
-<td><p>KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ</p></td>
-</tr>
-</tbody>
-</table>
-++++
+|WIF-compressed
+|KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
+|===
 
 All of these representations are different ways of showing the same
 number, the same private key. They look different, but any one format
@@ -1555,48 +1440,26 @@ can easily be converted to any other((("private keys", "formats", startref="priv
 The commonly((("private keys", "compressed", id="private-key-compress")))((("compressed private keys", id="compress-private-key"))) used term "compressed private key" is a misnomer, because when a private
 key is exported as WIF-compressed, it is actually one byte _longer_ than
 an "uncompressed" private key. That is because the private key has an
-added one-byte suffix (shown as 01 in hex in <<table_4-4>>), which
-signifies that the private key is from a newer wallet and should only be
-used to produce compressed public keys. Private keys are not themselves
-compressed and cannot be compressed. The term _compressed private key_
-really means "private key from which only compressed public keys should
-be derived," whereas _uncompressed private key_ really means "private
-key from which only uncompressed public keys should be derived." You
-should only refer to the export format as "WIF-compressed" or "WIF" and
-not refer to the private key itself as "compressed" to avoid further
-confusion
+added one-byte suffix (shown as 01 in hex in <<table_4-4>>).
 
-<<table_4-4>> shows the same key, encoded in WIF and WIF-compressed formats.
+[[table_4-4]]
+.Example: Same key, different formats
+[cols="1,1",options="header"]
+|===
+|Format |Private key
 
-++++
-<table id="table_4-4">
-<caption>Example: Same key, different formats</caption>
-<thead>
-<tr>
-<th>Format</th>
-<th>Private key</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>Hex</p></td>
-<td><p>1E99423A4ED27608A15A2616A2B0E9E52CED330AC530EDCC32C8FFC6A526AEDD</p></td>
-</tr>
-<tr>
-<td><p>WIF</p></td>
-<td><p>5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn</p></td>
-</tr>
-<tr>
-<td><p>Hex-compressed</p></td>
-<td><p>1E99423A4ED27608A15A2616A2B0E9E52CED330AC530EDCC32C8FFC6A526AEDD01</p></td>
-</tr>
-<tr>
-<td><p>WIF-compressed</p></td>
-<td><p>KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ</p></td>
-</tr>
-</tbody>
-</table>
-++++
+|Hex
+|1E99423A4ED27608A15A2616A2B0E9E52CED330AC530EDCC32C8FFC6A526AEDD
+
+|WIF
+|5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
+
+|Hex-compressed
+|1E99423A4ED27608A15A2616A2B0E9E52CED330AC530EDCC32C8FFC6A526AEDD01
+
+|WIF-compressed
+|KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
+|===
 
 Notice that the hex-compressed private key format has one extra byte at
 the end (01 in hex). While the base58 encoding version prefix is the
@@ -1674,123 +1537,40 @@ like "1Kids" can be seen as searching for an address in the range from
 +1Kids11111111111111111111111111111+ to
 +1Kidszzzzzzzzzzzzzzzzzzzzzzzzzzzzz+. There are approximately 58^29^
 (approximately 1.4 × 10^51^) addresses in that range, all starting with
-"1Kids." <<table_4-11>> shows the range of addresses that have the
-prefix 1Kids.
+"1Kids." See <<table_4-11>>.
 
-++++
-<table id="table_4-11">
-<caption>The range of vanity addresses starting with “1Kids”</caption>
-<tbody>
-<tr>
-<td><p><strong>From</strong></p></td>
-<td><p><code>1Kids11111111111111111111111111111</code></p></td>
-</tr>
-<tr>
-<td/>
-<td><p><code>1Kids11111111111111111111111111112</code></p></td>
-</tr>
-<tr>
-<td/>
-<td><p><code>1Kids11111111111111111111111111113</code></p></td>
-</tr>
-<tr>
-<td/>
-<td><p><code>…​</code></p></td>
-</tr>
-<tr>
-<td><p><strong>To</strong></p></td>
-<td><p><code>1Kidszzzzzzzzzzzzzzzzzzzzzzzzzzzzz</code></p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[table_4-11]]
+.The range of vanity addresses starting with "1Kids"
+[cols="1,1",options="header"]
+|===
+|*From* |`1Kids11111111111111111111111111111`
+| |`1Kids11111111111111111111111111112`
+| |`1Kids11111111111111111111111111113`
+| |`…​`
+|*To* |`1Kidszzzzzzzzzzzzzzzzzzzzzzzzzzzzz`
+|===
 
 Let's look at the pattern "1Kids" as a number and see how frequently we
-might find this pattern in a Bitcoin address (see <<table_4-12>>). An
-average desktop computer PC, without any specialized hardware, can
-search approximately 100,000 keys per second.
+might find this pattern in a Bitcoin address (see <<table_4-12>>).
 
-++++
-<table id="table_4-12">
-<caption>The frequency of a vanity pattern (1KidsCharity) and average search time on a desktop PC</caption>
-<thead>
-<tr>
-<th>Length</th>
-<th>Pattern</th>
-<th>Frequency</th>
-<th>Average search time</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>1</p></td>
-<td><p>1K</p></td>
-<td><p>1 in 58 keys</p></td>
-<td><p>&lt; 1 milliseconds</p></td>
-</tr>
-<tr>
-<td><p>2</p></td>
-<td><p>1Ki</p></td>
-<td><p>1 in 3,364</p></td>
-<td><p>50 milliseconds</p></td>
-</tr>
-<tr>
-<td><p>3</p></td>
-<td><p>1Kid</p></td>
-<td><p>1 in 195,000</p></td>
-<td><p>&lt; 2 seconds</p></td>
-</tr>
-<tr>
-<td><p>4</p></td>
-<td><p>1Kids</p></td>
-<td><p>1 in 11 million</p></td>
-<td><p>1 minute</p></td>
-</tr>
-<tr>
-<td><p>5</p></td>
-<td><p>1KidsC</p></td>
-<td><p>1 in 656 million</p></td>
-<td><p>1 hour</p></td>
-</tr>
-<tr>
-<td><p>6</p></td>
-<td><p>1KidsCh</p></td>
-<td><p>1 in 38 billion</p></td>
-<td><p>2 days</p></td>
-</tr>
-<tr>
-<td><p>7</p></td>
-<td><p>1KidsCha</p></td>
-<td><p>1 in 2.2 trillion</p></td>
-<td><p>3–4 months</p></td>
-</tr>
-<tr>
-<td><p>8</p></td>
-<td><p>1KidsChar</p></td>
-<td><p>1 in 128 trillion</p></td>
-<td><p>13–18 years</p></td>
-</tr>
-<tr>
-<td><p>9</p></td>
-<td><p>1KidsChari</p></td>
-<td><p>1 in 7 quadrillion</p></td>
-<td><p>800 years</p></td>
-</tr>
-<tr>
-<td><p>10</p></td>
-<td><p>1KidsCharit</p></td>
-<td><p>1 in 400 quadrillion</p></td>
-<td><p>46,000 years</p></td>
-</tr>
-<tr>
-<td><p>11</p></td>
-<td><p>1KidsCharity</p></td>
-<td><p>1 in 23 quintillion</p></td>
-<td><p>2.5 million years</p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[table_4-12]]
+.The frequency of a vanity pattern (1KidsCharity) and average search time on a desktop PC
+[cols="1,1,1,1",options="header"]
+|===
+|Length |Pattern |Frequency |Average search time
+
+|1 |1K |1 in 58 keys |< 1 milliseconds
+|2 |1Ki |1 in 3,364 |50 milliseconds
+|3 |1Kid |1 in 195,000 |< 2 seconds
+|4 |1Kids |1 in 11 million |1 minute
+|5 |1KidsC |1 in 656 million |1 hour
+|6 |1KidsCh |1 in 38 billion |2 days
+|7 |1KidsCha |1 in 2.2 trillion |3–4 months
+|8 |1KidsChar |1 in 128 trillion |13–18 years
+|9 |1KidsChari |1 in 7 quadrillion |800 years
+|10 |1KidsCharit |1 in 400 quadrillion |46,000 years
+|11 |1KidsCharity |1 in 23 quintillion |2.5 million years
+|===
 
 As you can see, Eugenia won't be creating the vanity address
 "1KidsCharity" anytime soon, even if she had access to several thousand
@@ -1860,7 +1640,6 @@ used for storing bitcoin. Use a recovery code to back up your
 keys, possibly with a hardware signing device to store keys and sign transactions. DO NOT
 USE PAPER [.keep-together]#WALLETS.#
 ====
-
 
 Paper wallets come in many designs and sizes, with many different
 features. <<paper_wallet_simple>> shows a sample paper wallet.

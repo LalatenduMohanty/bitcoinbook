@@ -77,41 +77,28 @@ up to about 4,000,000 bytes.  A complete block,
 with all transactions, can therefore be almost 50,000 times larger than the block
 header. <<block_structure1>> describes how Bitcoin Core stores the structure of a block.
 
-++++
-<table id="block_structure1">
-<caption>The structure of a block</caption>
-<thead>
-<tr>
-<th>Size</th>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Block Size</p></td>
-<td><p>The size of the block, in bytes, following this field</p></td>
-</tr>
-<tr>
-<td><p>80 bytes</p></td>
-<td><p>Block Header</p></td>
-<td><p>Several fields form the block header</p></td>
-</tr>
-<tr>
-<td><p>1–3 bytes (compactSize)</p></td>
-<td><p>Transaction Counter</p></td>
-<td><p>How many transactions follow</p></td>
-</tr>
-<tr>
-<td><p>Variable</p></td>
-<td><p>Transactions</p></td>
-<td><p>The transactions recorded in this block</p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[block_structure1]]
+.The structure of a block
+[cols="1,1,2",options="header"]
+|===
+|Size |Field |Description
 
+|4 bytes
+|Block Size
+|The size of the block, in bytes, following this field
+
+|80 bytes
+|Block Header
+|Several fields form the block header
+
+|1–3 bytes (compactSize)
+|Transaction Counter
+|How many transactions follow
+
+|Variable
+|Transactions
+|The transactions recorded in this block
+|===
 
 [[block_header]]
 === Block Header
@@ -119,50 +106,36 @@ header. <<block_structure1>> describes how Bitcoin Core stores the structure of 
 The ((("blocks", "block header")))((("block header")))block header consists of
 block metadata as shown in <<block_header_structure_ch09>>.
 
-++++
-<table id="block_header_structure_ch09">
-<caption>The structure of the block header</caption>
-<thead>
-<tr>
-<th>Size</th>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Version</p></td>
-<td><p>Originally a version field; its use has evolved over time</p></td>
-</tr>
-<tr>
-<td><p>32 bytes</p></td>
-<td><p>Previous Block Hash</p></td>
-<td><p>A hash of the previous (parent) block in the chain</p></td>
-</tr>
-<tr>
-<td><p>32 bytes</p></td>
-<td><p>Merkle Root</p></td>
-<td><p>The root hash of the merkle tree of this block’s transactions</p></td>
-</tr>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Timestamp</p></td>
-<td><p>The approximate creation time of this block (Unix epoch time)</p></td>
-</tr>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Target</p></td>
-<td><p>A compact encoding of the proof-of-work target for this block</p></td>
-</tr>
-<tr>
-<td><p>4 bytes</p></td>
-<td><p>Nonce</p></td>
-<td><p>Arbitrary data used for the proof-of-work algorithm</p></td>
-</tr>
-</tbody>
-</table>
-++++
+[[block_header_structure_ch09]]
+.The structure of the block header
+[cols="1,1,2",options="header"]
+|===
+|Size |Field |Description
+
+|4 bytes
+|Version
+|Originally a version field; its use has evolved over time
+
+|32 bytes
+|Previous Block Hash
+|A hash of the previous (parent) block in the chain
+
+|32 bytes
+|Merkle Root
+|The root hash of the merkle tree of this block's transactions
+
+|4 bytes
+|Timestamp
+|The approximate creation time of this block (Unix epoch time)
+
+|4 bytes
+|Target
+|A compact encoding of the proof-of-work target for this block
+
+|4 bytes
+|Nonce
+|Arbitrary data used for the proof-of-work algorithm
+|===
 
 The nonce, target, and timestamp are used in the mining
 process and will be discussed in more detail in <<mining>>.
@@ -174,8 +147,8 @@ The ((("blocks", "identifiers", id="block-identify")))((("block header hash", id
 is its cryptographic hash, a commitment made by hashing the
 block header twice through the SHA256 algorithm. The resulting 32-byte
 hash is called the _block hash_ but is more accurately the _block header
-hash_, pass:[<span class="keep-together">because only the block header is
-used to compute it. For example,</span>]
+hash_, pass:[because only the block header is
+used to compute it. For example,]
 +000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f+ is
 the block hash of the first block on Bitcoin's blockchain. The block hash
 identifies a block uniquely and unambiguously and can be independently
@@ -189,10 +162,10 @@ separate database table as part of the block's metadata, to facilitate
 indexing and faster retrieval of blocks from disk.
 
 A second way to identify a block is by its position in the blockchain,
-called the pass:[<span class="keep-together"><em>block height</em>. The
-genesis block is at block height 0 (zero) and is the</span>]
-pass:[<span class="keep-together">same block that was previously
-referenced by the following block hash</span>]
+called the pass:[_block height_. The
+genesis block is at block height 0 (zero) and is the]
+pass:[same block that was previously
+referenced by the following block hash]
 +000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f+. A
 block can thus be identified in two ways: by referencing the block hash
 or by referencing the block height. Each subsequent block added "on top"
@@ -393,11 +366,9 @@ stored in the merkle tree; rather, their data is hashed and the
 resulting hash is stored in each leaf node as H~A~, H~B~, H~C~, and
 H~D~:
 
-++++
-<pre data-type="codelisting">
-H<sub>A</sub> = SHA256(SHA256(Transaction A))
-</pre>
-++++
+----
+H~A~ = SHA256(SHA256(Transaction A))
+----
 
 Consecutive pairs of leaf nodes are then summarized in a parent node by
 concatenating the two hashes and hashing them together. For example, to
@@ -405,11 +376,9 @@ construct the parent node H~AB~, the two 32-byte hashes of the children
 are concatenated to create a 64-byte string. That string is then
 double-hashed to produce the parent node's hash:
 
-++++
-<pre data-type="codelisting">
-H<sub>AB</sub> = SHA256(SHA256(H<sub>A</sub> || H<sub>B</sub>))
-</pre>
-++++
+----
+H~AB~ = SHA256(SHA256(H~A~ || H~B~))
+----
 
 The process continues until there is only one node at the top, the node
 known as the merkle root. That 32-byte hash is stored in the block
@@ -438,7 +407,6 @@ image::images/mbc3_1103.png["merkle_tree_odd"]
 An extended comment in Bitcoin Core's source code, reproduced here with slight revisions, describes a
 significant problem in the design of Bitcoin's duplication of odd
 elements in its merkle tree:
-
 
 ____
 WARNING! If you're reading this because you're learning about crypto
@@ -472,11 +440,8 @@ together, and treating that identically to the block having an invalid
 merkle root. Assuming no double-SHA256 collisions, this will detect all
 known ways of changing the transactions without affecting the merkle
 root.
-
-++++
-<p data-type="attribution">Bitcoin Core <em>src/consensus/merkle.cpp</em></p>
-++++
 ____
+-- Bitcoin Core _src/consensus/merkle.cpp_
 
 ****
 
